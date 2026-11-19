@@ -31,6 +31,7 @@
     "observations": {
       "type": "object", "additionalProperties": false, "required": ["request", "mode", "status"],
       "properties": {
+        "currentWhen": { "$ref": "#/$defs/filter" },
         "request": { "$ref": "#/$defs/key" }, "path": { "$ref": "#/$defs/path" }, "lookupBy": { "const": "item.id" },
         "join": { "type": "object", "additionalProperties": false, "required": ["path"], "properties": { "path": { "$ref": "#/$defs/path" }, "itemPath": { "$ref": "#/$defs/path" } } },
         "mode": { "enum": ["heartbeat", "snapshot"] }, "latestBy": { "$ref": "#/$defs/path" },

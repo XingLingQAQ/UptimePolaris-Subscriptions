@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "id": "polaris-website",
+  "version": "1.0.1",
+  "name": "Uptime Polaris websites",
+  "description": "Published website monitors from another Polaris instance.",
+  "categories": [
+    "website"
+  ],
+  "capabilities": [
+    "http-json",
+    "snapshot"
+  ],
+  "inputs": {
+    "baseUrl": {
+      "type": "url",
+      "required": true
+    }
+  },
+  "requests": {
+    "status": {
+      "baseUrlInput": "baseUrl",
+      "method": "GET",
+      "path": "/api/public/status",
+      "query": {
+        "view": "monitor"
+      },
+      "intervalSec": 60,
+      "response": "json"
+    }
+  },
+  "items": {
+    "request": "status",
+    "path": "$.monitors[*]",
+    "fields": {
+      "id": "$.id",
+      "name": "$.name",
+      "group": "$.group"
+    }
+  },
+  "observations": {
+    "request": "status",
+    "mode": "snapshot",
+    "currentWhen": {
+      "op": "eq",
+      "path": "$.source_available",
+      "value": true
+    },
+    "status": {
+      "path": "$.st",
+      "map": {
+        "0": "down",
+        "1": "up",
+        "2": "degraded",
+        "4": "pending"
+      },
+      "fallback": "unknown"
+    },
+    "latency": {
+      "path": "$.v",
+      "unit": "ms"
+    }
+  }
+}

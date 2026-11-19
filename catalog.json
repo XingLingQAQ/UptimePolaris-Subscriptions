@@ -54,8 +54,8 @@
         "website"
       ],
       "kind": "template",
-      "version": "1.0.0",
-      "path": "templates/polaris-website/1.0.0.json",
+      "version": "1.0.1",
+      "path": "templates/polaris-website/1.0.1.json",
       "capabilities": [
         "http-json",
         "snapshot"
@@ -75,8 +75,8 @@
         "model"
       ],
       "kind": "template",
-      "version": "1.0.0",
-      "path": "templates/polaris-model/1.0.0.json",
+      "version": "1.0.1",
+      "path": "templates/polaris-model/1.0.1.json",
       "capabilities": [
         "http-json",
         "heartbeat-history"
