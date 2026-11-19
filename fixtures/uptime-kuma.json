@@ -1,0 +1,40 @@
+{
+  "catalog": {
+    "publicGroupList": [
+      {
+        "name": "Example services",
+        "monitorList": [
+          {
+            "id": 1,
+            "name": "API"
+          },
+          {
+            "id": 2,
+            "name": "Storage"
+          }
+        ]
+      }
+    ]
+  },
+  "heartbeats": {
+    "heartbeatList": {
+      "1": [
+        {
+          "status": 1,
+          "time": "2026-11-20 00:00:00",
+          "ping": 24
+        }
+      ],
+      "2": [
+        {
+          "status": 3,
+          "time": "2026-11-20 00:00:00",
+          "ping": null
+        }
+      ]
+    },
+    "uptimeList": {
+      "1_24": 0.999
+    }
+  }
+}

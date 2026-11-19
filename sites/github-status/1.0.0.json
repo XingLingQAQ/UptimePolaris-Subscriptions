@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "id": "github-status",
+  "version": "1.0.0",
+  "name": "GitHub Status",
+  "description": "Current component status from a public Statuspage JSON endpoint.",
+  "categories": [
+    "website"
+  ],
+  "capabilities": [
+    "http-json",
+    "snapshot"
+  ],
+  "inputs": {
+    "baseUrl": {
+      "type": "url",
+      "required": true,
+      "default": "https://www.githubstatus.com"
+    }
+  },
+  "requests": {
+    "status": {
+      "baseUrlInput": "baseUrl",
+      "method": "GET",
+      "path": "/api/v2/summary.json",
+      "intervalSec": 60,
+      "response": "json"
+    }
+  },
+  "items": {
+    "request": "status",
+    "path": "$.components[*]",
+    "filter": {
+      "op": "eq",
+      "path": "$.group",
+      "value": false
+    },
+    "fields": {
+      "id": "$.id",
+      "name": "$.name",
+      "group": "$.group_id"
+    }
+  },
+  "observations": {
+    "request": "status",
+    "mode": "snapshot",
+    "changedAt": {
+      "path": "$.updated_at",
+      "format": "iso8601"
+    },
+    "status": {
+      "path": "$.status",
+      "map": {
+        "operational": "up",
+        "degraded_performance": "degraded",
+        "partial_outage": "degraded",
+        "major_outage": "down",
+        "under_maintenance": "maintenance"
+      },
+      "fallback": "unknown"
+    }
+  }
+}

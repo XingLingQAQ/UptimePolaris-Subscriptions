@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "id": "uptime-kuma",
+      "name": "Uptime Kuma",
+      "description": "Public status page monitors and heartbeats.",
+      "categories": [
+        "website",
+        "model"
+      ],
+      "kind": "template",
+      "version": "1.0.0",
+      "path": "templates/uptime-kuma/1.0.0.json",
+      "capabilities": [
+        "http-json",
+        "dictionary-join",
+        "heartbeat-history"
+      ],
+      "minimumAppVersion": "0.1.0",
+      "verifiedAt": null,
+      "documentation": "README.md",
+      "limitations": [
+        "History contains received observations; source history may be incomplete."
+      ]
+    },
+    {
+      "id": "statuspage",
+      "name": "Statuspage",
+      "description": "Current component status from a public Statuspage JSON endpoint.",
+      "categories": [
+        "website",
+        "model"
+      ],
+      "kind": "template",
+      "version": "1.0.0",
+      "path": "templates/statuspage/1.0.0.json",
+      "capabilities": [
+        "http-json",
+        "snapshot"
+      ],
+      "minimumAppVersion": "0.1.0",
+      "verifiedAt": null,
+      "documentation": "README.md",
+      "limitations": [
+        "Snapshot status changes do not imply probe counts, latency or SLA."
+      ]
+    },
+    {
+      "id": "polaris-website",
+      "name": "Uptime Polaris websites",
+      "description": "Published website monitors from another Polaris instance.",
+      "categories": [
+        "website"
+      ],
+      "kind": "template",
+      "version": "1.0.0",
+      "path": "templates/polaris-website/1.0.0.json",
+      "capabilities": [
+        "http-json",
+        "snapshot"
+      ],
+      "minimumAppVersion": "0.1.0",
+      "verifiedAt": null,
+      "documentation": "README.md",
+      "limitations": [
+        "Snapshot status changes do not imply probe counts, latency or SLA."
+      ]
+    },
+    {
+      "id": "polaris-model",
+      "name": "Uptime Polaris models",
+      "description": "Published model observations from another Polaris instance.",
+      "categories": [
+        "model"
+      ],
+      "kind": "template",
+      "version": "1.0.0",
+      "path": "templates/polaris-model/1.0.0.json",
+      "capabilities": [
+        "http-json",
+        "heartbeat-history"
+      ],
+      "minimumAppVersion": "0.1.0",
+      "verifiedAt": null,
+      "documentation": "README.md",
+      "limitations": [
+        "History contains received observations; source history may be incomplete."
+      ]
+    },
+    {
+      "id": "json-website",
+      "name": "JSON website status",
+      "description": "Map your JSON service list to website status.",
+      "categories": [
+        "website"
+      ],
+      "kind": "template",
+      "version": "1.0.0",
+      "path": "templates/json-website/1.0.0.json",
+      "capabilities": [
+        "http-json",
+        "snapshot"
+      ],
+      "minimumAppVersion": "0.1.0",
+      "verifiedAt": null,
+      "documentation": "README.md",
+      "limitations": [
+        "Snapshot status changes do not imply probe counts, latency or SLA."
+      ]
+    },
+    {
+      "id": "json-model",
+      "name": "JSON model status",
+      "description": "Map your JSON model list to model status.",
+      "categories": [
+        "model"
+      ],
+      "kind": "template",
+      "version": "1.0.0",
+      "path": "templates/json-model/1.0.0.json",
+      "capabilities": [
+        "http-json",
+        "snapshot"
+      ],
+      "minimumAppVersion": "0.1.0",
+      "verifiedAt": null,
+      "documentation": "README.md",
+      "limitations": [
+        "Snapshot status changes do not imply probe counts, latency or SLA."
+      ]
+    },
+    {
+      "id": "github-status",
+      "name": "GitHub Status",
+      "description": "Current component status from a public Statuspage JSON endpoint.",
+      "categories": [
+        "website"
+      ],
+      "kind": "site",
+      "version": "1.0.0",
+      "path": "sites/github-status/1.0.0.json",
+      "capabilities": [
+        "http-json",
+        "snapshot"
+      ],
+      "minimumAppVersion": "0.1.0",
+      "verifiedAt": "2026-11-19",
+      "documentation": "README.md",
+      "limitations": [
+        "Snapshot status changes do not imply probe counts, latency or SLA."
+      ]
+    },
+    {
+      "id": "cloudflare-status",
+      "name": "Cloudflare Status",
+      "description": "Current component status from a public Statuspage JSON endpoint.",
+      "categories": [
+        "website"
+      ],
+      "kind": "site",
+      "version": "1.0.0",
+      "path": "sites/cloudflare-status/1.0.0.json",
+      "capabilities": [
+        "http-json",
+        "snapshot"
+      ],
+      "minimumAppVersion": "0.1.0",
+      "verifiedAt": "2026-11-19",
+      "documentation": "README.md",
+      "limitations": [
+        "Snapshot status changes do not imply probe counts, latency or SLA."
+      ]
+    }
+  ]
+}

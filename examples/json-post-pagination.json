@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "json-post-pagination",
+  "version": "1.0.0",
+  "name": "JSON POST with pagination",
+  "description": "Map your JSON service list to website status.",
+  "categories": [
+    "website"
+  ],
+  "capabilities": [
+    "http-json",
+    "snapshot",
+    "pagination"
+  ],
+  "inputs": {
+    "baseUrl": {
+      "type": "url",
+      "required": true
+    },
+    "token": {
+      "type": "secret",
+      "required": true
+    }
+  },
+  "requests": {
+    "status": {
+      "baseUrlInput": "baseUrl",
+      "method": "POST",
+      "path": "/public/status/search",
+      "intervalSec": 60,
+      "response": "json",
+      "headers": {
+        "Authorization": "Bearer {token}"
+      },
+      "body": {
+        "region": "global"
+      },
+      "pagination": {
+        "type": "page",
+        "parameter": "page",
+        "location": "body",
+        "start": 1,
+        "nextPath": "$.hasMore",
+        "itemsPath": "$.services",
+        "maxPages": 5
+      }
+    }
+  },
+  "items": {
+    "request": "status",
+    "path": "$.services[*]",
+    "fields": {
+      "id": "$.id",
+      "name": "$.name"
+    }
+  },
+  "observations": {
+    "request": "status",
+    "mode": "snapshot",
+    "status": {
+      "path": "$.status",
+      "map": {
+        "up": "up",
+        "down": "down",
+        "degraded": "degraded",
+        "pending": "pending",
+        "maintenance": "maintenance",
+        "unknown": "unknown"
+      },
+      "fallback": "unknown"
+    }
+  }
+}

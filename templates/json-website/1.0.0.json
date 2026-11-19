@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "id": "json-website",
+  "version": "1.0.0",
+  "name": "JSON website status",
+  "description": "Map your JSON service list to website status.",
+  "categories": [
+    "website"
+  ],
+  "capabilities": [
+    "http-json",
+    "snapshot"
+  ],
+  "inputs": {
+    "baseUrl": {
+      "type": "url",
+      "required": true
+    }
+  },
+  "requests": {
+    "status": {
+      "baseUrlInput": "baseUrl",
+      "method": "GET",
+      "path": "/status.json",
+      "intervalSec": 60,
+      "response": "json"
+    }
+  },
+  "items": {
+    "request": "status",
+    "path": "$.services[*]",
+    "fields": {
+      "id": "$.id",
+      "name": "$.name"
+    }
+  },
+  "observations": {
+    "request": "status",
+    "mode": "snapshot",
+    "status": {
+      "path": "$.status",
+      "map": {
+        "up": "up",
+        "down": "down",
+        "degraded": "degraded",
+        "pending": "pending",
+        "maintenance": "maintenance",
+        "unknown": "unknown"
+      },
+      "fallback": "unknown"
+    }
+  }
+}

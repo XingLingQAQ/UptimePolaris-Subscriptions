@@ -1,0 +1,12 @@
+{
+  "models": [
+    {
+      "id": "model-a",
+      "name": "Example model",
+      "modelId": "example-model-v1",
+      "provider": "Example provider",
+      "protocol": "openai",
+      "status": "up"
+    }
+  ]
+}

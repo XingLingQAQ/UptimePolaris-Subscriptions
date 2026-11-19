@@ -1,0 +1,14 @@
+{
+  "services": [
+    {
+      "id": "gateway",
+      "name": "API gateway",
+      "status": "up"
+    },
+    {
+      "id": "storage",
+      "name": "Object storage",
+      "status": "degraded"
+    }
+  ]
+}

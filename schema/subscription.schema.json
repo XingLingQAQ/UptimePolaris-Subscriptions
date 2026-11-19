@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/XingLingQAQ/UptimePolaris-Subscriptions/main/schema/subscription.schema.json",
+  "title": "Uptime Polaris subscription descriptor",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "version", "name", "description", "categories", "capabilities", "inputs", "requests", "items", "observations"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+    "version": { "type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "description": { "type": "string", "maxLength": 2000 },
+    "categories": { "type": "array", "minItems": 1, "maxItems": 2, "uniqueItems": true, "items": { "enum": ["website", "model"] } },
+    "capabilities": { "type": "array", "maxItems": 10, "uniqueItems": true, "items": { "enum": ["http-json", "dictionary-join", "array-join", "heartbeat-history", "snapshot", "pagination"] } },
+    "inputs": { "type": "object", "minProperties": 1, "maxProperties": 32, "propertyNames": { "$ref": "#/$defs/key" }, "additionalProperties": { "$ref": "#/$defs/input" } },
+    "requests": { "type": "object", "minProperties": 1, "maxProperties": 8, "propertyNames": { "$ref": "#/$defs/key" }, "additionalProperties": { "$ref": "#/$defs/request" } },
+    "items": {
+      "type": "object", "additionalProperties": false, "required": ["request", "path", "fields"],
+      "properties": {
+        "request": { "$ref": "#/$defs/key" }, "path": { "$ref": "#/$defs/path" }, "filter": { "$ref": "#/$defs/filter" },
+        "fields": {
+          "type": "object", "additionalProperties": false, "required": ["id", "name"],
+          "properties": {
+            "id": { "$ref": "#/$defs/selector" }, "name": { "$ref": "#/$defs/selector" }, "group": { "$ref": "#/$defs/selector" }, "url": { "$ref": "#/$defs/selector" },
+            "modelId": { "$ref": "#/$defs/selector" }, "provider": { "$ref": "#/$defs/selector" }, "protocol": { "$ref": "#/$defs/selector" }
+          }
+        }
+      }
+    },
+    "observations": {
+      "type": "object", "additionalProperties": false, "required": ["request", "mode", "status"],
+      "properties": {
+        "request": { "$ref": "#/$defs/key" }, "path": { "$ref": "#/$defs/path" }, "lookupBy": { "const": "item.id" },
+        "join": { "type": "object", "additionalProperties": false, "required": ["path"], "properties": { "path": { "$ref": "#/$defs/path" }, "itemPath": { "$ref": "#/$defs/path" } } },
+        "mode": { "enum": ["heartbeat", "snapshot"] }, "latestBy": { "$ref": "#/$defs/path" },
+        "observedAt": { "$ref": "#/$defs/time" }, "changedAt": { "$ref": "#/$defs/time" },
+        "status": {
+          "type": "object", "additionalProperties": false, "required": ["path", "map", "fallback"],
+          "properties": {
+            "path": { "$ref": "#/$defs/path" }, "fallback": { "const": "unknown" },
+            "map": { "type": "object", "minProperties": 1, "maxProperties": 64, "propertyNames": { "type": "string", "maxLength": 120 }, "additionalProperties": { "enum": ["up", "down", "degraded", "pending", "maintenance", "unknown"] } }
+          }
+        },
+        "latency": { "type": "object", "additionalProperties": false, "required": ["path", "unit"], "properties": { "path": { "$ref": "#/$defs/path" }, "unit": { "enum": ["ms", "s"] } } },
+        "reason": { "$ref": "#/$defs/path" }
+      }
+    },
+    "metrics": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "type": "object", "additionalProperties": false, "required": ["request", "path", "unit", "windowSec"],
+          "properties": {
+            "request": { "$ref": "#/$defs/key" }, "path": { "$ref": "#/$defs/path" }, "lookupBy": { "const": "item.id" },
+            "suffix": { "type": "string", "maxLength": 64 }, "unit": { "enum": ["ratio", "percent"] }, "windowSec": { "type": "integer", "minimum": 1, "maximum": 31536000 }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "key": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$" },
+    "path": { "type": "string", "minLength": 1, "maxLength": 512, "pattern": "^\\$" },
+    "scalar": { "type": ["string", "number", "boolean", "null"] },
+    "input": {
+      "type": "object", "additionalProperties": false, "required": ["type"],
+      "properties": {
+        "type": { "enum": ["url", "string", "number", "boolean", "secret", "enum"] }, "required": { "type": "boolean" },
+        "label": { "type": "string", "maxLength": 120 }, "description": { "type": "string", "maxLength": 2000 },
+        "default": { "type": ["string", "number", "boolean"], "maxLength": 4096 },
+        "options": { "type": "array", "minItems": 1, "maxItems": 100, "uniqueItems": true, "items": { "type": "string", "maxLength": 256 } }
+      }
+    },
+    "stringMap": { "type": "object", "maxProperties": 32, "propertyNames": { "type": "string", "minLength": 1, "maxLength": 128 }, "additionalProperties": { "type": "string", "maxLength": 8192 } },
+    "json": {
+      "anyOf": [
+        { "$ref": "#/$defs/scalar" },
+        { "type": "array", "maxItems": 100, "items": { "$ref": "#/$defs/json" } },
+        { "type": "object", "maxProperties": 100, "additionalProperties": { "$ref": "#/$defs/json" } }
+      ]
+    },
+    "request": {
+      "type": "object", "additionalProperties": false, "required": ["baseUrlInput", "method", "path", "intervalSec", "response"],
+      "properties": {
+        "baseUrlInput": { "$ref": "#/$defs/key" }, "method": { "enum": ["GET", "POST"] }, "path": { "type": "string", "maxLength": 2048, "pattern": "^/" },
+        "intervalSec": { "type": "integer", "minimum": 60, "maximum": 86400 }, "response": { "const": "json" },
+        "query": { "$ref": "#/$defs/stringMap" }, "headers": { "$ref": "#/$defs/stringMap" }, "body": { "$ref": "#/$defs/json" },
+        "pagination": {
+          "type": "object", "additionalProperties": false, "required": ["type", "parameter", "location", "itemsPath", "maxPages"],
+          "properties": {
+            "type": { "enum": ["page", "cursor"] }, "parameter": { "$ref": "#/$defs/key" }, "location": { "enum": ["query", "body"] },
+            "start": { "type": "integer", "minimum": 0, "maximum": 10000 }, "nextPath": { "$ref": "#/$defs/path" },
+            "itemsPath": { "$ref": "#/$defs/path" }, "maxPages": { "type": "integer", "minimum": 1, "maximum": 10 }
+          }
+        }
+      }
+    },
+    "selector": {
+      "anyOf": [
+        { "$ref": "#/$defs/path" },
+        {
+          "type": "object", "additionalProperties": false,
+          "anyOf": [{ "required": ["path"] }, { "required": ["constant"] }],
+          "properties": {
+            "path": { "$ref": "#/$defs/path" }, "from": { "enum": ["item", "parent", "root"] },
+            "constant": { "$ref": "#/$defs/scalar" }, "default": { "$ref": "#/$defs/scalar" },
+            "prefix": { "type": "string", "maxLength": 120 }, "suffix": { "type": "string", "maxLength": 120 },
+            "number": { "type": "boolean" }, "scale": { "type": "number", "minimum": 0, "maximum": 1000000 }
+          }
+        }
+      ]
+    },
+    "filter": {
+      "anyOf": [
+        { "type": "object", "additionalProperties": false, "required": ["op", "path", "value"], "properties": { "op": { "const": "eq" }, "path": { "$ref": "#/$defs/path" }, "value": { "$ref": "#/$defs/scalar" } } },
+        { "type": "object", "additionalProperties": false, "required": ["op", "path", "values"], "properties": { "op": { "const": "in" }, "path": { "$ref": "#/$defs/path" }, "values": { "type": "array", "maxItems": 100, "items": { "$ref": "#/$defs/scalar" } } } },
+        { "type": "object", "additionalProperties": false, "required": ["op", "path"], "properties": { "op": { "const": "exists" }, "path": { "$ref": "#/$defs/path" } } },
+        { "type": "object", "additionalProperties": false, "required": ["op", "conditions"], "properties": { "op": { "const": "and" }, "conditions": { "type": "array", "minItems": 1, "maxItems": 10, "items": { "$ref": "#/$defs/filter" } } } }
+      ]
+    },
+    "time": {
+      "type": "object", "additionalProperties": false, "required": ["path", "format"],
+      "properties": {
+        "path": { "$ref": "#/$defs/path" }, "format": { "enum": ["iso8601", "unix-seconds", "unix-milliseconds", "yyyy-MM-dd HH:mm:ss[.SSS]"] }, "timeZone": { "const": "UTC" }
+      }
+    }
+  }
+}
