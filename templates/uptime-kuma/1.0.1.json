@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "id": "uptime-kuma",
+  "version": "1.0.1",
+  "name": "Uptime Kuma",
+  "description": "Public status page monitors and heartbeats.",
+  "categories": [
+    "website",
+    "model"
+  ],
+  "capabilities": [
+    "http-json",
+    "dictionary-join",
+    "heartbeat-history"
+  ],
+  "inputs": {
+    "baseUrl": {
+      "type": "url",
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "sourcePage": {
+    "baseUrlInput": "baseUrl",
+    "path": "/status/{slug}"
+  },
+  "requests": {
+    "catalog": {
+      "baseUrlInput": "baseUrl",
+      "method": "GET",
+      "path": "/api/status-page/{slug}",
+      "intervalSec": 300,
+      "response": "json"
+    },
+    "heartbeats": {
+      "baseUrlInput": "baseUrl",
+      "method": "GET",
+      "path": "/api/status-page/heartbeat/{slug}",
+      "intervalSec": 60,
+      "response": "json"
+    }
+  },
+  "items": {
+    "request": "catalog",
+    "path": "$.publicGroupList[*].monitorList[*]",
+    "fields": {
+      "id": "$.id",
+      "name": "$.name",
+      "group": {
+        "path": "$.name",
+        "from": "parent"
+      },
+      "url": "$.url"
+    }
+  },
+  "observations": {
+    "request": "heartbeats",
+    "path": "$.heartbeatList",
+    "lookupBy": "item.id",
+    "mode": "heartbeat",
+    "latestBy": "$.time",
+    "observedAt": {
+      "path": "$.time",
+      "format": "yyyy-MM-dd HH:mm:ss[.SSS]",
+      "timeZone": "UTC"
+    },
+    "status": {
+      "path": "$.status",
+      "map": {
+        "0": "down",
+        "1": "up",
+        "2": "pending",
+        "3": "maintenance"
+      },
+      "fallback": "unknown"
+    },
+    "latency": {
+      "path": "$.ping",
+      "unit": "ms"
+    }
+  },
+  "metrics": {
+    "availability": {
+      "request": "heartbeats",
+      "path": "$.uptimeList",
+      "lookupBy": "item.id",
+      "suffix": "_24",
+      "unit": "ratio",
+      "windowSec": 86400
+    }
+  }
+}

@@ -10,8 +10,8 @@
         "model"
       ],
       "kind": "template",
-      "version": "1.0.0",
-      "path": "templates/uptime-kuma/1.0.0.json",
+      "version": "1.0.1",
+      "path": "templates/uptime-kuma/1.0.1.json",
       "capabilities": [
         "http-json",
         "dictionary-join",
@@ -33,8 +33,8 @@
         "model"
       ],
       "kind": "template",
-      "version": "1.0.0",
-      "path": "templates/statuspage/1.0.0.json",
+      "version": "1.0.1",
+      "path": "templates/statuspage/1.0.1.json",
       "capabilities": [
         "http-json",
         "snapshot"
@@ -54,8 +54,8 @@
         "website"
       ],
       "kind": "template",
-      "version": "1.0.1",
-      "path": "templates/polaris-website/1.0.1.json",
+      "version": "1.0.2",
+      "path": "templates/polaris-website/1.0.2.json",
       "capabilities": [
         "http-json",
         "snapshot"
@@ -75,8 +75,8 @@
         "model"
       ],
       "kind": "template",
-      "version": "1.0.1",
-      "path": "templates/polaris-model/1.0.1.json",
+      "version": "1.0.2",
+      "path": "templates/polaris-model/1.0.2.json",
       "capabilities": [
         "http-json",
         "heartbeat-history"
@@ -138,8 +138,8 @@
         "website"
       ],
       "kind": "site",
-      "version": "1.0.0",
-      "path": "sites/github-status/1.0.0.json",
+      "version": "1.0.1",
+      "path": "sites/github-status/1.0.1.json",
       "capabilities": [
         "http-json",
         "snapshot"
@@ -159,8 +159,8 @@
         "website"
       ],
       "kind": "site",
-      "version": "1.0.0",
-      "path": "sites/cloudflare-status/1.0.0.json",
+      "version": "1.0.1",
+      "path": "sites/cloudflare-status/1.0.1.json",
       "capabilities": [
         "http-json",
         "snapshot"
